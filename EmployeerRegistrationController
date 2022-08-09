@@ -1,0 +1,92 @@
+public with sharing class EmployeerRegistrationController {
+   
+    // public EmployeerRegistrationController(){
+    //     employee= Database.query('select Name,id from Account');
+    // }
+
+
+    public string nameInput{get;set;}
+    public Boolean test{get;set;}
+    public Date birthDayInput{get;set;}
+    public string genderInput{get;set;}
+    public Integer salaryInput{get;set;}
+	public String idToButtonDel{get;set;}
+    public String idToButtonEdit{get;set;}
+    public List<Employee__c> getEmployee{get;set;}
+    public Employee__c employeeToUpdat{get;set;} 
+    public List<Employee__c> employeesList {get;set;}
+  
+    public void myInputQuery(){
+     
+        Employee__c newEmployee = new Employee__c(    
+            Name = nameInput,
+			BirthDay__c = birthDayInput,
+			Gender__c = genderInput,
+			Salary__c = salaryInput
+        );
+
+        insert newEmployee;
+
+
+       nameInput = null;
+       birthDayInput = null; 
+       genderInput = null;
+       salaryInput = null;
+
+
+
+    }
+    public List<Employee__c> getEmployees() {
+        List<Employee__c> employees = [
+            SELECT Id, Name, Gender__c, Salary__c, BirthDay__c 
+            FROM Employee__c
+			ORDER BY CreatedDate
+        ];
+        this.employeesList = employees;
+   		return employees;
+    }
+
+	public void delEmployee() {
+        
+
+        Employee__c employeeToDelete = new Employee__c();
+
+        for (Employee__c employee : employeesList) {
+            if (employee.Id == idToButtonDel) {
+                employeeToDelete = employee;
+            }
+        }
+        
+
+    	delete employeeToDelete;
+    }
+
+
+    public PageReference quickUpdat(){
+        Employee__c employeeToUpdat = new Employee__c();
+        for (Employee__c employee : employeesList) {
+                if (employee.Id == idToButtonEdit) {
+                    employeeToUpdat = employee;
+                }
+        }
+        update employeeToUpdat;
+        System.debug('idToButton:' + employeeToUpdat );
+        refreshData();
+        return ApexPages.CurrentPage();
+
+    }
+
+
+private void refreshData(){
+    getEmployee = [
+        SELECT Id, Name, Gender__c, Salary__c, BirthDay__c 
+        FROM Employee__c
+        ORDER BY CreatedDate];
+
+
+
+} 
+
+
+
+}
