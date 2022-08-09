@@ -1,0 +1,124 @@
+<apex:page doctype="html-5.0" controller="EmployeerRegistrationController">
+    <h1>Employee Registration</h1>
+
+    <apex:form id="form1">
+        <div class="registerInputs">
+            <div class="inputs">
+                <label>
+                    <legend>Nome</legend>
+                    <apex:input value="{!nameInput}" type="text" required="true" title="Name" />
+                </label>
+            </div>
+            <div class="inputs">
+                <legend>BirthDay</legend>
+                <apex:input value="{!birthDayInput}" type="date" required="true" title="BirthDay" />
+
+            </div>
+            <div class="inputs">
+                <legend>Gender</legend>
+                <apex:input value="{!genderInput}" type="text" required="true" title="Gender" />
+
+            </div>
+            <div class="inputs">
+                <legend>Salary</legend>
+
+                <apex:input value="{!salaryInput}" type="number" required="true" title="Salary" />
+
+            </div>
+        </div>
+        <apex:commandButton action="{!myInputQuery}" value="Save" id="buttonSave" />
+
+    </apex:form>
+
+    <apex:form >
+
+        <apex:pageBlock id="block" mode="inlineEdit">
+
+            <!-- <apex:repeat value="{!employees}" var="employee" id="employeeID"> -->
+
+            <apex:pageBlockTable columnsWidth="100px,100px" var="employee" value="{!employees}">
+
+
+                <apex:column headerValue="Name" id="block3">
+                    <apex:outputfield value="{!employee.Name}" />
+                </apex:column>
+
+                <apex:column headerValue="Gender">
+                    <apex:outputfield value="{!employee.Gender__c}" />
+                </apex:column>
+                <apex:column headerValue="Salary">
+                    <apex:outputfield value="{!employee.Salary__c}" />
+                </apex:column>
+                <apex:column headerValue="BirthDay">
+                    <apex:outputfield value="{!employee.BirthDay__c}" />
+                </apex:column>
+
+                <apex:inlineEditSupport event="onclick" showOnEdit="buttonSave2" hideOnEdit="form1" changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"></apex:inlineEditSupport>
+
+                <apex:column headerValue="Delete Employee">
+                    <apex:commandButton action="{!delEmployee}" value="Delete" rerender="block" id="buttonDel">
+                        <apex:param name="idToButtonDel" value="{!employee.Id}" assignTo="{!idToButtonDel}" />
+                    </apex:commandButton>
+                </apex:column>
+
+                <apex:inlineEditSupport event="onclick" showOnEdit="buttonSave2" hideOnEdit="form1" changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"></apex:inlineEditSupport>
+                <apex:column headerValue="Save Edition">
+                  
+                    
+                    <apex:commandButton action="{!quickUpdat}" value="Save" rerender="block3" id="buttonSave2">
+
+                        <apex:param name="idToButtonEdit" value="{!employee.Id}" assignTo="{!idToButtonEdit}" />
+
+                    </apex:commandButton>
+                </apex:column>
+
+            </apex:pageBlockTable>
+            <!-- </apex:repeat> -->
+
+        </apex:pageBlock>
+    </apex:form>
+
+    <style type="text/css">
+        form1 {
+            display: flex;
+
+        }
+
+        .registerInputs {
+            padding: 20px;
+
+        }
+
+        .inputs {
+            display: flex;
+            margin: 10px;
+            width: 100%;
+
+        }
+
+
+
+
+        .myBoldClass {
+            color: black
+        }
+
+        h5 {
+            width: 150px;
+        }
+
+        .buttons {
+            width: 150px;
+        }
+
+        .input {
+
+            border: 1px solid #000000;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 20px;
+            font-family: Arial;
+            color: #000000;
+        }
+    </style>
+</apex:page>
